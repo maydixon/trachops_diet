@@ -1,4 +1,4 @@
-Bat_ID	Date_tested	Notes	Exemplar	PLYBAK	NUMBER	REPEAT	TIME	RESPONSE	"REVIEWED (1-Y, 2 = N)"	RESPONSE ON REVIEW	if not 3 	NOTES
+Bat_ID	Date_tested	Notes	Exemplar	PLYBAK	NUMBER	REPEAT	TIME	RESPONSE	REVIEWED	RESPONSE_REVIEWED	if not 3 	NOTES
 Ice King	28-May-19	"second bat tested, caught with 9 other bats from tunnel 9 on same day. Tested on same night as Ice King, all other bats had experience or were juvenile. Released same night"	2	Sci_bou	1	0	21:46	2	1	2	2	"no interest at the end, only in the beginning "
 Ice King	28-May-19	"second bat tested, caught with 9 other bats from tunnel 9 on same day. Tested on same night as Ice King, all other bats had experience or were juvenile. Released same night"	2	Pri_tae	2	0	NA	0	1	0	0	revisar
 Ice King	28-May-19	"second bat tested, caught with 9 other bats from tunnel 9 on same day. Tested on same night as Ice King, all other bats had experience or were juvenile. Released same night"	2	Ano_wet	3	0	NA	0	1	0	0	an airplane passing by
