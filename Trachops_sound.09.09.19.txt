@@ -1,6 +1,6 @@
 Bat_ID	Date_tested	Notes	Exemplar	PLYBAK	NUMBER	TIME	RESPONSE	"REVIEWED (1-Y, 2 = N)"	RESPONSE ON REVIEW	if not 3 	NOTES
 Ice King	28-May-19	"second bat tested, caught with 9 other bats from tunnel 9 on same day. Tested on same night as Ice King, all other bats had experience or were juvenile. Released same night"	2	Sci_bou	1	21:46	2	1	2	2	"no interest at the end, only in the beginning "
-Ice King	28-May-19	"second bat tested, caught with 9 other bats from tunnel 9 on same day. Tested on same night as Ice King, all other bats had experience or were juvenile. Released same night"	2	 Pri_tae	2	NA	0	1	0	0	revisar
+Ice King	28-May-19	"second bat tested, caught with 9 other bats from tunnel 9 on same day. Tested on same night as Ice King, all other bats had experience or were juvenile. Released same night"	2	Pri_tae	2	NA	0	1	0	0	revisar
 Ice King	28-May-19	"second bat tested, caught with 9 other bats from tunnel 9 on same day. Tested on same night as Ice King, all other bats had experience or were juvenile. Released same night"	2	Ano_wet	3	NA	0	1	0	0	an airplane passing by
 Ice King	28-May-19	"second bat tested, caught with 9 other bats from tunnel 9 on same day. Tested on same night as Ice King, all other bats had experience or were juvenile. Released same night"	2	Eng_pus	4	NA	2	1	2	2	revisar
 Ice King	28-May-19	"second bat tested, caught with 9 other bats from tunnel 9 on same day. Tested on same night as Ice King, all other bats had experience or were juvenile. Released same night"	2	Flo_mel	5	NA	0	1	0	0	"revisar, reaction once at the end of the video, could be 2"
@@ -9,7 +9,7 @@ Ice King	28-May-19	"second bat tested, caught with 9 other bats from tunnel 9 on
 Ice King	28-May-19	"second bat tested, caught with 9 other bats from tunnel 9 on same day. Tested on same night as Ice King, all other bats had experience or were juvenile. Released same night"	2	Den_ebr	8	NA	2	1	1	1	
 Ice King	28-May-19	"second bat tested, caught with 9 other bats from tunnel 9 on same day. Tested on same night as Ice King, all other bats had experience or were juvenile. Released same night"	2	Ano_dry	9	NA	2	1	2	2	
 Petunia	14-Jun-19	"caught from a roost in a group, on gamoba road, the secret double tunnel inside the gamboa road double tunnel. Tested first night, first. Starting after 2100"	4	Den_ebr	1	22:13	2	1	2	2	habituated by the end
-Petunia	14-Jun-19	"caught from a roost in a group, on gamoba road, the secret double tunnel inside the gamboa road double tunnel. Tested first night, first. Starting after 2100"	2	 Pri_tae	3	22:20	2	1	1	1	"habituated at the end, responed to sounds outside- strong initial response though"
+Petunia	14-Jun-19	"caught from a roost in a group, on gamoba road, the secret double tunnel inside the gamboa road double tunnel. Tested first night, first. Starting after 2100"	2	Pri_tae	3	22:20	2	1	1	1	"habituated at the end, responed to sounds outside- strong initial response though"
 Petunia	14-Jun-19	"caught from a roost in a group, on gamoba road, the secret double tunnel inside the gamboa road double tunnel. Tested first night, first. Starting after 2100"	2	Dia_dia	4	22:28	0 or 1	1	0	0	"mostly sleeping, acknowledged the sound and stopped"
 Petunia	14-Jun-19	"caught from a roost in a group, on gamoba road, the secret double tunnel inside the gamboa road double tunnel. Tested first night, first. Starting after 2100"	7	Ano_dry	5	22:32	1	1	1	1	mostly at start
 Petunia	14-Jun-19	"caught from a roost in a group, on gamoba road, the secret double tunnel inside the gamboa road double tunnel. Tested first night, first. Starting after 2100"		Pur_ton	6	22:36	0	1	1	1	did not respond: TOO LOUD for the humans
@@ -19,7 +19,7 @@ Petunia	14-Jun-19	"caught from a roost in a group, on gamoba road, the secret do
 Petunia	14-Jun-19	"caught from a roost in a group, on gamoba road, the secret double tunnel inside the gamboa road double tunnel. Tested first night, first. Starting after 2100"	5	Sci_bou	10	22:54	2	1	1	1	"on review: 1, but ABSURDLY strong at start. lokos like spasms"
 Petunia	14-Jun-19	"caught from a roost in a group, on gamoba road, the secret double tunnel inside the gamboa road double tunnel. Tested first night, first. Starting after 2100"	6	Ano_wet	11 repeat	22:59	1	1	1	1	sleeping
 Bernadette	14-Jun-19		4	Dia_dia	1	12:30	0	1	0	0	"first try was not good, on review, truth. noisy testers. try 2 follows"
-Bernadette	14-Jun-19		3	 Pri_tae	2	12:37	2	1	1	1	first try was not good
+Bernadette	14-Jun-19		3	Pri_tae	2	12:37	2	1	1	1	first try was not good
 Bernadette	14-Jun-19		6	Ano_dry	3	12:46	0	1	0	0	
 Bernadette	14-Jun-19		6	Ano_wet	4	12:50	0	1	0	0	el muricelago duerme
 Bernadette	14-Jun-19		1	Flo_mel	5	12:53	0	1	0	0	el muricelago duerme y alerta oros sonidos
@@ -52,7 +52,7 @@ Elsa	11-Jun-19		1	Den_ebr	3	19:19	2	1	2	2
 Elsa	11-Jun-19		1	Cra_fitz	4	19:25	5	1	5	5	"revisar video, revisar la otra camara.clear and repeated"
 Elsa	11-Jun-19		1	Flo_mel	5	19:31	4	1	4	4	"revisar video, revisar la otra camara. on review: no video of this on cam 1, camera must have been cut off. but on cam 2, clear 4 to wall. "
 Elsa	11-Jun-19		1	Sci_bou	6	19:40	5	1	5	5	Varias llamadas sociales. crystal clear
-Elsa	11-Jun-19		1	 Pri_tae	7	19:46	2	1	2	2	Grooming.
+Elsa	11-Jun-19		1	Pri_tae	7	19:46	2	1	2	2	Grooming.
 Elsa	11-Jun-19		1	Eng_pus	8	19:57	5	1	5	5	"Llamadas sociales muy fuertes, y se metio adentro del blok."
 Elsa	11-Jun-19		1	Ano_wet	9	19:58	3	1	4	4	"Revisar video - I actually think this is 4, because flies within 1/2 meter of screen"
 Elsa	11-Jun-19		1	Dia_dia	1R	20:04	2	1	1	1	Grooming
@@ -63,11 +63,11 @@ Ian	8/27/19	Caught by Dine and Gregg at Town roost and tested	5	Sci_bou	4	20:46	
 Ian	8/27/19	Caught by Dine and Gregg at Town roost and tested	9	Ano_dry	5	20:52	1	1	1	1	
 Ian	8/27/19	Caught by Dine and Gregg at Town roost and tested	2	Ano_wet	6	20:58	1	1	1	1	
 Ian	8/27/19	Caught by Dine and Gregg at Town roost and tested	2	Cra_fitz	7	21:02	1	1	1	1	orientacion muy lenta hacia el parlante.
-Ian	8/27/19	Caught by Dine and Gregg at Town roost and tested	1	 Pri_tae	8	21:06	2	1	1	1	orientacion hacia el parlante al final del sonido.
+Ian	8/27/19	Caught by Dine and Gregg at Town roost and tested	1	Pri_tae	8	21:06	2	1	1	1	orientacion hacia el parlante al final del sonido.
 Ian	8/27/19	Caught by Dine and Gregg at Town roost and tested	7	Eng_pus	9	21:12	3	1	3	2	revisar video. On review: flew to above speaker
 Ian	8/27/19	Caught by Dine and Gregg at Town roost and tested		Pur_ton	10	21:17	1	1	1	1	revisar video.
 Green Goblin	9/3/19	"En el tablero de informacion del experimento el nombre del murcielago esta incorrecto (VENOM), en realidad es Green goblin. (Errores tecnicos). Caught by Dine and Gregg in the Tubes by Frijolito"		Eng_pus	1	7:47	2	1	2	2	Revisar video
-Green Goblin	9/3/19	"En el tablero de informacion del experimento el nombre del murcielago esta incorrecto (VENOM), en realidad es Green goblin. (Errores tecnicos). Caught by Dine and Gregg in the Tubes by Frijolito"	3	 Pri_tae	2	8:00	1	1	1	1	"Hora equivocada en el tablero, revisar video."
+Green Goblin	9/3/19	"En el tablero de informacion del experimento el nombre del murcielago esta incorrecto (VENOM), en realidad es Green goblin. (Errores tecnicos). Caught by Dine and Gregg in the Tubes by Frijolito"	3	Pri_tae	2	8:00	1	1	1	1	"Hora equivocada en el tablero, revisar video."
 Green Goblin	9/3/19	"En el tablero de informacion del experimento el nombre del murcielago esta incorrecto (VENOM), en realidad es Green goblin. (Errores tecnicos). Caught by Dine and Gregg in the Tubes by Frijolito"	2	Sci_bou	3	8:05	1	1	1	1	Revisar video
 Green Goblin	9/3/19	"En el tablero de informacion del experimento el nombre del murcielago esta incorrecto (VENOM), en realidad es Green goblin. (Errores tecnicos). Caught by Dine and Gregg in the Tubes by Frijolito"	9	Ano_dry	4	8:12	1	1	2	2	Revisar video
 Green Goblin	9/3/19	"En el tablero de informacion del experimento el nombre del murcielago esta incorrecto (VENOM), en realidad es Green goblin. (Errores tecnicos). Caught by Dine and Gregg in the Tubes by Frijolito"	4	Ano_wet	5	8:15	0	1	0	0	
@@ -77,7 +77,7 @@ Green Goblin	9/3/19	"En el tablero de informacion del experimento el nombre del 
 Green Goblin	9/3/19	"En el tablero de informacion del experimento el nombre del murcielago esta incorrecto (VENOM), en realidad es Green goblin. (Errores tecnicos). Caught by Dine and Gregg in the Tubes by Frijolito"	1	Dia_dia	9	8:33	0	1	0	0	
 Green Goblin	9/3/19	"En el tablero de informacion del experimento el nombre del murcielago esta incorrecto (VENOM), en realidad es Green goblin. (Errores tecnicos). Caught by Dine and Gregg in the Tubes by Frijolito"	1	Flo_mel	10	8:38	0	1	0	0	Revisar video
 Venom	3-Sep-19	"Caught by Dine and Gregg at Frijolitos; Nota: En en tablero de informacion se escribio que se inicio a las  22:00h, pero en realidad fue a las 21:00h que corresponde a las 9:00 de la noche.; En este experimento olvide sonar el sonido control.; En el tablero de informacion despues del sonido #5 coloque mal los numero de guia de los sonidos."	1	Eng_pus	1	21:15	0	1	0	0	Revisar video
-Venom	3-Sep-19	"Caught by Dine and Gregg at Frijolitos; Nota: En en tablero de informacion se escribio que se inicio a las  22:00h, pero en realidad fue a las 21:00h que corresponde a las 9:00 de la noche.; En este experimento olvide sonar el sonido control.; En el tablero de informacion despues del sonido #5 coloque mal los numero de guia de los sonidos."	2	 Pri_tae	2	21:20	0	1	0	0	Puede ser 1.
+Venom	3-Sep-19	"Caught by Dine and Gregg at Frijolitos; Nota: En en tablero de informacion se escribio que se inicio a las  22:00h, pero en realidad fue a las 21:00h que corresponde a las 9:00 de la noche.; En este experimento olvide sonar el sonido control.; En el tablero de informacion despues del sonido #5 coloque mal los numero de guia de los sonidos."	2	Pri_tae	2	21:20	0	1	0	0	Puede ser 1.
 Venom	3-Sep-19	"Caught by Dine and Gregg at Frijolitos; Nota: En en tablero de informacion se escribio que se inicio a las  22:00h, pero en realidad fue a las 21:00h que corresponde a las 9:00 de la noche.; En este experimento olvide sonar el sonido control.; En el tablero de informacion despues del sonido #5 coloque mal los numero de guia de los sonidos."	9	Sci_bou	3	21:26	0	1	0	0	
 Venom	3-Sep-19	"Caught by Dine and Gregg at Frijolitos; Nota: En en tablero de informacion se escribio que se inicio a las  22:00h, pero en realidad fue a las 21:00h que corresponde a las 9:00 de la noche.; En este experimento olvide sonar el sonido control.; En el tablero de informacion despues del sonido #5 coloque mal los numero de guia de los sonidos."	9	Ano_dry	4	21:32	0	1	0	0	
 Venom	3-Sep-19	"Caught by Dine and Gregg at Frijolitos; Nota: En en tablero de informacion se escribio que se inicio a las  22:00h, pero en realidad fue a las 21:00h que corresponde a las 9:00 de la noche.; En este experimento olvide sonar el sonido control.; En el tablero de informacion despues del sonido #5 coloque mal los numero de guia de los sonidos."	1	Cra_fitz	7	21:41	1	1	0	0	"Finalizando el sonido, movio sus orejas delicadamente."
@@ -93,5 +93,5 @@ Hombre Arana	3-Sep-19	Caught by Dine and Gregg at Frijolitos tubes		Pur_ton	5	23
 Hombre Arana	3-Sep-19	Caught by Dine and Gregg at Frijolitos tubes	6	Ano_wet	6	23:52	0	1	1	1	
 Hombre Arana	3-Sep-19	Caught by Dine and Gregg at Frijolitos tubes	9	Ano_dry	7	23:57	2	1	2	2	Revisar video
 Hombre Arana	3-Sep-19	Caught by Dine and Gregg at Frijolitos tubes	3	Sci_bou	8	0:00:00	2	1	2	2	Al final de este sonido volo hacia el parlante
-Hombre Arana	3-Sep-19	Caught by Dine and Gregg at Frijolitos tubes	3	 Pri_tae	8	0:04	4	1	4	4	Volo muy cerca del parlante pero no aterrizo.
+Hombre Arana	3-Sep-19	Caught by Dine and Gregg at Frijolitos tubes	3	Pri_tae	8	0:04	4	1	4	4	Volo muy cerca del parlante pero no aterrizo.
 Hombre Arana	3-Sep-19	Caught by Dine and Gregg at Frijolitos tubes	7	Eng_pus	10	0:10	4	1	4	4	Revisar video
