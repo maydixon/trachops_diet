@@ -33,6 +33,7 @@ library(car)
 library(ordinal) 
 library(emmeans)
 library(multcompView)
+library(ggmosaic)
 ```
 
 ```{r}
@@ -237,17 +238,7 @@ cLaB <- scale_colour_manual(values = c("#E95D47"))
 ```{r}
 #plot mean responses and st. dev
 
-Resp_avg
 
-diet_plot <- ggplot() +
- geom_point(data = trac_sound, aes(x = PLYBAK, y = if.not.3, colour = PLYBAK), position = position_jitter(width = 0.08), size = 5) +
- C3 + TM3 + Xlab2 + Ylab2 + #all parameters for general data
-geom_point(data = Resp_avg, mapping=aes(x = PLYBAK, y = Resp_average,    size = 4, position = position_jitter(width = 0.08))) + #parameters for the averages  #shape=17,color = PLYBAK,
-geom_errorbar(data=Resp_avg, mapping=aes(x = PLYBAK,  ymin=Resp_average-sd, ymax=Resp_average+sd), width=.2)
-diet_plot 
-#mapping=aes(x = PLYBAK, y = Resp_average), 
-
-Resp_avg
 
 diet_plot <- ggplot(data = Resp_avg, aes(x = PLYBAK, y = Resp_average, colour = PLYBAK))
 diet_plot <- diet_plot + G4+  C3 + TM3 + Xlab2 + Ex_labs + Ylab2 #all parameters for general data
@@ -259,15 +250,75 @@ head(as.numeric)
 diet_plot
 
 
+#ggsave("diet_plot.pdf")
 
 
 
 
-#fix scale
-#fix labels
 #change colors
 
 #rm(diet_plot)
 
 ```
+
+
+
+## Or can do this is mosaic plot form
+
+```{r}
+
+
+
+mosaic_d2<- ggplot(data = trac_sound) +
+geom_mosaic(aes(weight = 1, x = product(if.not.3, PLYBAK), fill=if.not.3),  na.rm=TRUE) +  
+scale_fill_brewer(type="seq",  direction=1) +
+Xlab2 + 
+ylab("# of bats with response") +
+
+#TM2
+#scale_x_continuous(breaks= c("Eng_pus","Cra_fitz", "Sci_bou", "Pri_tae",   "Den_ebr", "Dia_dia",  "Flo_mel", "Ano_dry", "Ano_wet","Pur_ton"),labels=c( c("E. pustulosus","C. fitzingeri", "S. boulengeri", "P. taeniatus",   "D. ebraccatus", "D. diastema",  "F. mellivora", "dry leaves - Anolis sp", "wet leaves - Anolis sp","Pure tone"))) +
+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),  axis.text.x = element_text( size = 12, angle = 45, hjust=1))+ 
+      
+guides(fill=guide_legend(title = "Response score"  , reverse = TRUE)) 
+mosaic_d2 
+# rm(mosaic_d2 ) 
+# ggsave("mosaic_diet.jpg") 
+ TM <- theme_calc(base_size = 25) + theme(axis.text.x = element_text(angle = 45, hjust=1), plot.background =element_blank(), legend.title = element_blank()) #tilted x-axis labels and title, no legend title
+
+
+```
+
+
+
+```{r}
+
+Int_palette<- c("#006837", "#31a354", "#78c679", "#ffffcc")
+#scale color brewer, name colors, ylgn 5
+
+t.d.int.plot<- t.d.int
+
+t.d.int.plot$primary_stim <- factor(t.d.int.plot$primary_stim,levels = c("ts" ,"t1c", "t2c" , "de", "ra" , "rra","rt" ),ordered = TRUE)
+
+t.d.int.plot$Ordinal3<- factor(t.d.int.plot$Ordinal3, levels = c(4, 3, 2, 1, 0))
+t.d.int.plot$Ordinal3<- factor(t.d.int.plot$Ordinal3, ordered= FALSE)
+levels(t.d.int.plot$Ordinal3)
+class(t.d.int.plot$primary_stim)   ##R
+ #Ra_T
+  mosaic_int<- ggplot(data = t.d.int.plot) +
+   geom_mosaic(aes(weight = 1, x = product(Ordinal3, primary_stim), fill=Ordinal3), na.rm=TRUE) +  
+        scale_fill_manual(values=Int_palette)+
+   #scale_fill_brewer(type="seq", palette= Int_palette, direction=-1) +
+  # scale_x_continuous(breaks=c("ts",  "t1c", "t2c", "de",  "ra",  "rra", "rt" ),
+     #   labels=c("0c P. pustulosus","1c P. pustulosus","2c pustulosus","D. ebraccatus", "R. alata", "rev R. alata", "rev P. pustulosus"))+
+  
+          theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black")) + #this gets rid of grey background and lines, adds y+x axes lines
+        labs(x="Acoustic stimuli ", y= "Interest score in trial 1") +
+        guides(fill=guide_legend(title = "Interest Score", reverse = TRUE)) 
+  mosaic_int
+
+  
+ggsave("initial_interest_mosaic.pdf", width = 6.5, height = 5.55)
+```
+
 
