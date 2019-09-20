@@ -1,0 +1,273 @@
+---
+title: "trachops_diet"
+author: "may"
+date: "9/9/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+QUESTIONS: 
+
+Which sounds did bats approach or attack? 
+
+Which had higher responses? 
+
+
+
+
+
+
+
+```{r}
+library(GmAMisc) 
+library(readxl)
+library(ggplot2)
+library(dplyr)
+library(ggthemes)
+library(RColorBrewer)
+library(plotly)
+library(car)
+library(ordinal) 
+library(emmeans)
+library(multcompView)
+```
+
+```{r}
+
+trac_sound<-read.table("https://raw.githubusercontent.com/maydixon/trachops_diet/master/Trachops_sound.09.09.19.txt", sep="\t", header=TRUE) #web
+#View(trac_sound)
+
+
+
+# Recode if.not.3 so that 0= no response, 1= ears twitch, 2=orient, 3=flight to, 4= lands
+#Make Response, if.not.3, response.reviewed ordinal
+#basically just have to make current 4 = 3 and 5 = 4
+
+trac_sound<- trac_sound %>% mutate(if.not.3 = case_when(
+      if.not.3 == "0" ~ "0" ,
+      if.not.3 == "1" ~ "1",
+      if.not.3 == "2" ~ "2",
+      if.not.3 == "4" ~ "3",
+      if.not.3 == "5" ~ "4"))
+
+#Make a few columns factors
+
+#trac_sound[ c("RESPONSE","RESPONSE_REVIEWED" ,"if.not.3")] <- lapply(trac_sound[ c("RESPONSE","RESPONSE_REVIEWED" ,"if.not.3")], as.factor)
+
+
+# Remove unresponsive bat? 
+trac_sound <-subset( trac_sound, trac_sound$Bat_ID !="Venom")
+
+
+#relevel PLayback factors for plotting later
+levels(trac_sound$PLYBAK)
+trac_sound$PLYBAK <- factor(trac_sound$PLYBAK, levels = c("Eng_pus","Cra_fitz", "Sci_bou", "Pri_tae",   "Den_ebr", "Dia_dia",  "Flo_mel", "Ano_dry", "Ano_wet","Pur_ton"))
+levels(trac_sound$PLYBAK)
+```
+
+Exploration
+```{r}
+str(trac_sound)
+class(trac_sound$PLYBAK)
+unique(trac_sound$PLYBAK)
+class(trac_sound$NUMBER)
+class(trac_sound$RESPONSE_REVIEWED)
+unique(trac_sound$RESPONSE_REVIEWED)
+```
+
+
+```{r}
+#hist(trac_sound$as.numeric(RESPONSE_REVIEWED)
+```
+Model of bat responses to the different sounds
+```{r}
+#https://stats.stackexchange.com/questions/368150/lsmeans-output-for-clmm-models-r
+#https://cran.r-project.org/web/packages/emmeans/vignettes/sophisticated.html#ordinal
+
+
+#model 
+
+clmm_call_type<- clmm(as.factor(if.not.3) ~ PLYBAK + (1| Bat_ID), data= trac_sound, nAGQ = 10)
+summary(clmm_call_type)
+print(clmm_call_type)
+
+
+
+#test for model proportional odds assumption (doesn't apply with 1 variable)
+#scale_test(clm_call_type)
+
+
+# Estimated marginal means: "mea
+
+em_call_type <-emmeans(clmm_call_type, "PLYBAK", mode ="mean.class")
+
+em_call_type
+cld_call_type<- cld(em_call_type, letters=LETTERS)
+cld_call_type
+plot(cld_call_type)
+
+x<- filter(trac_sound,PLYBAK =="Den_ebr" )
+s= sum(as.numeric(x$if.not.3))/ length(as.numeric(x$if.not.3))
+s
+
+#
+#ggsave("tracdiet_emmeans.jpg")
+
+
+#Figure out the error
+# Figure out how to make these more robust and what that means
+
+
+
+
+```
+
+Could potentially either bootstrap or permute this
+Would have to randomize the data within groups (ID)
+then run the CLMM
+then find some measure for significance
+extract that, see how often more significant than non-random model
+
+or bootstrap
+
+
+```{r}
+summary(clmm_call_type)$coefficients
+
+```
+
+## PLOTTING
+
+Make a doc with means and sd
+And also full data in the background (greyed out)
+```{r}
+
+# Make response variable numeric
+trac_sound$if.not.3 <- as.numeric(trac_sound$if.not.3)
+
+
+# Mean response and SD per playback type
+Resp_avg<-trac_sound %>% group_by(PLYBAK) %>%
+      summarise(Resp_average = mean(if.not.3, na.rm=TRUE), sd = sd(if.not.3, na.rm = TRUE))
+
+Resp_avg
+
+
+
+
+```
+
+some plot parameters
+```{r}
+
+#theme: 
+TM <- theme_calc(base_size = 25) + theme(axis.text.x = element_text(angle = 45, hjust=1), plot.background =element_blank(), legend.title = element_blank()) #tilted x-axis labels and title, no legend title
+
+TM2<-theme_calc(base_size = 25) + theme(axis.text.x = element_text(angle = 45, hjust=1), axis.title.x=element_blank()) #tilted x-axis labels, no x title
+
+TM2.5<-theme_calc(base_size = 25) + theme(axis.text.x = element_text(angle = 45, hjust=1), axis.title.x=element_blank(), legend.position="none") #tilted x-axis labels, no x title
+
+
+TM4<-theme_calc(base_size = 25) + theme(axis.text.x = element_text(angle = 45, hjust=1), axis.title.x=element_blank(), legend.position="none") #tilted x-axis labels, no x title, no legend
+
+
+TM1 <- theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(), legend.title = element_blank(), plot.background =element_blank() ) #blank axes, blank legend title
+
+TM3 <-  theme_calc() +theme(axis.title.x=element_blank(), axis.text.x = element_text(angle = 75, hjust=1), legend.position = "none") #tilted x-axis labels and title, for no size control, remoe base_size argument #for diagonal text, put angle = 45
+
+TM4 <-  theme_calc() +theme(axis.title.x=element_blank(), axis.text.x=element_blank(), legend.position = "none") # no size control, no x axis labels
+
+n_colors<- length(unique(trac_sound$PLYBAK))
+PL <-  "Spectral"
+PL <- colorRampPalette(brewer.pal(n_colors, "Set3"))
+PL = colorRampPalette(brewer.pal(11, "Spectral"))
+
+#palette with a lot of colors
+c25 <- c("dodgerblue2","#E31A1C", # red
+                "green4",
+                "#6A3D9A", # purple
+                "#FF7F00", # orange
+                "black","gold1",
+                "skyblue2","#FB9A99", # lt pink
+                "palegreen2",
+                "#CAB2D6", # lt purple
+                "#FDBF6F", # lt orange
+                "gray70", "khaki2",
+                "maroon","orchid1","deeppink1","blue1","steelblue4",
+                "darkturquoise","green1","yellow4","yellow3",
+                "darkorange4","brown")
+pie(rep(1,25), col=c25)
+
+
+#this is the number of species in the plot/ dataset at any given time, can be used to change the palette
+
+#+ theme(axis.text.x = element_text(angle = 45, hjust=1, size = 14), legend.position = "none") #format x-axis, and remove side legend #hjust 1 aligns labels
+  #### settings for plot type 3####
+  G3<- geom_point(position = position_jitter(width = 0.08), size = 5)
+  G4<- geom_point( size = 5) #not jittered
+
+#Y axis labels
+  
+Ex_labs <-  scale_x_discrete(breaks= c("Eng_pus","Cra_fitz", "Sci_bou", "Pri_tae",   "Den_ebr", "Dia_dia",  "Flo_mel", "Ano_dry", "Ano_wet","Pur_ton"),
+     labels=c( c("E. pustulosus","C. fitzingeri", "S. boulengeri", "P. taeniatus",   "D. ebraccatus", "D. diastema",  "F. mellivora", "dry leaves - Anolis sp", "wet leaves - Anolis sp","Pure tone")))
+  
+
+  C3 <- coord_cartesian(ylim = c(0, 4))
+  Plt2<-scale_colour_manual(values = PL(n_colors))
+  Xlab2 <-  xlab("Acoustic stimuli")
+  Ylab2 <-  ylab("Response score")
+  Ylab3 <-  ylab(" Average response score")
+  H2 <- 5  #height for plot output default
+  W2<- 13 # height default
+  
+  # "#9E0142" "#CB334C" "#E95D47" "#F88D51" "#FDBE6E" "#FEE593" "#FFFFBF" "#EAF69E" "#BEE5A0" "#88CFA4" "#54AEAC" "#397EB8" "#5E4FA2"
+  
+   #Colors for graphs
+cAJ<- scale_colour_manual(values = c("#9E0142")) #"#9E0142"
+cGC<- scale_colour_manual(values = c("#CB334C"))
+cLaB <- scale_colour_manual(values = c("#E95D47"))
+```
+
+
+```{r}
+#plot mean responses and st. dev
+
+Resp_avg
+
+diet_plot <- ggplot() +
+ geom_point(data = trac_sound, aes(x = PLYBAK, y = if.not.3, colour = PLYBAK), position = position_jitter(width = 0.08), size = 5) +
+ C3 + TM3 + Xlab2 + Ylab2 + #all parameters for general data
+geom_point(data = Resp_avg, mapping=aes(x = PLYBAK, y = Resp_average,    size = 4, position = position_jitter(width = 0.08))) + #parameters for the averages  #shape=17,color = PLYBAK,
+geom_errorbar(data=Resp_avg, mapping=aes(x = PLYBAK,  ymin=Resp_average-sd, ymax=Resp_average+sd), width=.2)
+diet_plot 
+#mapping=aes(x = PLYBAK, y = Resp_average), 
+
+Resp_avg
+
+diet_plot <- ggplot(data = Resp_avg, aes(x = PLYBAK, y = Resp_average, colour = PLYBAK))
+diet_plot <- diet_plot + G4+  C3 + TM3 + Xlab2 + Ex_labs + Ylab2 #all parameters for general data
+diet_plot <- diet_plot + geom_errorbar(aes(ymin=Resp_average-sd, ymax=Resp_average+sd), width=.2) 
+
+diet_plot <- diet_plot + geom_point(data = trac_sound, mapping=aes(x = PLYBAK, y = if.not.3), color = "light grey", alpha = 0.5, size = 4, position = position_jitter(width = 0.005)) #parameters for the averages  #shape=17,
+class(trac_sound$if.not.3)
+head(as.numeric)
+diet_plot
+
+
+
+
+
+
+#fix scale
+#fix labels
+#change colors
+
+#rm(diet_plot)
+
+```
+
