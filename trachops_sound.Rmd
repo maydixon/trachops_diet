@@ -58,31 +58,37 @@ trac_sound<- trac_sound %>% mutate(if.not.3 = case_when(
 
 #trac_sound[ c("RESPONSE","RESPONSE_REVIEWED" ,"if.not.3")] <- lapply(trac_sound[ c("RESPONSE","RESPONSE_REVIEWED" ,"if.not.3")], as.factor)
 
+#make if.not.3 numeric 
+trac_sound$if.not.3<- as.numeric(trac_sound$if.not.3)
 
 # Remove unresponsive bat? 
 trac_sound <-subset( trac_sound, trac_sound$Bat_ID !="Venom")
 
 
-#relevel PLayback factors for plotting later
+#relevel PLayback factors for plotting later: in order of amount found in diets
+
+
+# (Pristimantis, Anolis, Craugastor, Engystymops, Dendropsophus, Scinax, Disporus, Florisuga, then tone)
 levels(trac_sound$PLYBAK)
-trac_sound$PLYBAK <- factor(trac_sound$PLYBAK, levels = c("Eng_pus","Cra_fitz", "Sci_bou", "Pri_tae",   "Den_ebr", "Dia_dia",  "Flo_mel", "Ano_dry", "Ano_wet","Pur_ton"))
+
+trac_sound$PLYBAK <- factor(trac_sound$PLYBAK, levels = c("Pri_tae", "Ano_dry", "Ano_wet", "Cra_fitz", "Eng_pus",  "Den_ebr", "Sci_bou",  "Dia_dia",  "Flo_mel", "Pur_ton"))
 levels(trac_sound$PLYBAK)
 ```
+
 
 Exploration
 ```{r}
 str(trac_sound)
-class(trac_sound$PLYBAK)
-unique(trac_sound$PLYBAK)
-class(trac_sound$NUMBER)
-class(trac_sound$RESPONSE_REVIEWED)
-unique(trac_sound$RESPONSE_REVIEWED)
+
+hist(trac_sound$RESPONSE_REVIEWED)
+
 ```
 
 
-```{r}
-#hist(trac_sound$as.numeric(RESPONSE_REVIEWED)
-```
+
+
+
+
 Model of bat responses to the different sounds
 ```{r}
 #https://stats.stackexchange.com/questions/368150/lsmeans-output-for-clmm-models-r
@@ -90,6 +96,10 @@ Model of bat responses to the different sounds
 
 
 #model 
+# if.not.3 = response variable, ordinal scale 0-4 (Would 1-5 make the results more interpretable?)
+# PLYBAK = the sound stimuli, IV, with 10 levels
+# Bat_ID = Grouping/ random variable, 10 levels
+
 
 clmm_call_type<- clmm(as.factor(if.not.3) ~ PLYBAK + (1| Bat_ID), data= trac_sound, nAGQ = 10)
 summary(clmm_call_type)
@@ -101,7 +111,8 @@ print(clmm_call_type)
 #scale_test(clm_call_type)
 
 
-# Estimated marginal means: "mea
+# Estimated marginal means: "mean.class"
+# "mean.class" obtains the average of these probability distributions as probabilities of the integers 1–5. Does this take into account random effects? 
 
 em_call_type <-emmeans(clmm_call_type, "PLYBAK", mode ="mean.class")
 
@@ -110,9 +121,11 @@ cld_call_type<- cld(em_call_type, letters=LETTERS)
 cld_call_type
 plot(cld_call_type)
 
+#how similar is this to just a straight mean? 
 x<- filter(trac_sound,PLYBAK =="Den_ebr" )
 s= sum(as.numeric(x$if.not.3))/ length(as.numeric(x$if.not.3))
 s
+# similar, except +1 because the scale here is automatically 1-5, rather than 0-4. How is this different? 
 
 #
 #ggsave("tracdiet_emmeans.jpg")
@@ -126,19 +139,9 @@ s
 
 ```
 
-Could potentially either bootstrap or permute this
-Would have to randomize the data within groups (ID)
-then run the CLMM
-then find some measure for significance
-extract that, see how often more significant than non-random model
-
-or bootstrap
+There aren't really good bootstrap or permutation solutions, and they would likely just show us th same thing. According to stats guy. 
 
 
-```{r}
-summary(clmm_call_type)$coefficients
-
-```
 
 ## PLOTTING
 
@@ -147,11 +150,11 @@ And also full data in the background (greyed out)
 ```{r}
 
 # Make response variable numeric
-trac_sound$if.not.3 <- as.numeric(trac_sound$if.not.3)
+#trac_sound$if.not.3 <- as.numeric(trac_sound$if.not.3)
 
 
 # Mean response and SD per playback type
-Resp_avg<-trac_sound %>% group_by(PLYBAK) %>%
+Resp_avg<-trac_sound %>% group_by(as.numeric(PLYBAK)) %>%
       summarise(Resp_average = mean(if.not.3, na.rm=TRUE), sd = sd(if.not.3, na.rm = TRUE))
 
 Resp_avg
