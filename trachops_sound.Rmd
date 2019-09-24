@@ -34,6 +34,7 @@ library(ordinal)
 library(emmeans)
 library(multcompView)
 library(ggmosaic)
+library(dplyr)
 ```
 
 ```{r}
@@ -131,12 +132,19 @@ s
 #ggsave("tracdiet_emmeans.jpg")
 
 
-#Figure out the error
-# Figure out how to make these more robust and what that means
+#make emmeans output dataframe for ez plotting
+em_data <- as.data.frame(em_call_type)
 
 
+# can plot this on the scale of my ordinal scale (0-4 rather than 1-5, which is default for mean.class, )
+em_data.1<-em_data 
 
-
+em_data.1$mean.class<- em_data$mean.class -1
+em_data.1$asymp.LCL<-em_data$asymp.LCL - 1
+em_data.1$asymp.UCL<-em_data$asymp.UCL- 1
+em_data 
+em_data.1
+write_csv()
 ```
 
 There aren't really good bootstrap or permutation solutions, and they would likely just show us th same thing. According to stats guy. 
@@ -154,8 +162,9 @@ And also full data in the background (greyed out)
 
 
 # Mean response and SD per playback type
-Resp_avg<-trac_sound %>% group_by(as.numeric(PLYBAK)) %>%
-      summarise(Resp_average = mean(if.not.3, na.rm=TRUE), sd = sd(if.not.3, na.rm = TRUE))
+# (I call dply directly here bc some other package, probably ggplot, was calling plyr which made the group_by responses weird)
+Resp_avg<-trac_sound %>% dplyr::group_by(PLYBAK) %>%
+      dplyr::summarise(Resp_average = mean(if.not.3, na.rm=TRUE), sd = sd(if.not.3, na.rm = TRUE))
 
 Resp_avg
 
@@ -182,7 +191,7 @@ TM1 <- theme(axis.title.x=element_blank(),
         axis.text.x=element_blank(),
         axis.ticks.x=element_blank(), legend.title = element_blank(), plot.background =element_blank() ) #blank axes, blank legend title
 
-TM3 <-  theme_calc() +theme(axis.title.x=element_blank(), axis.text.x = element_text(angle = 75, hjust=1), legend.position = "none") #tilted x-axis labels and title, for no size control, remoe base_size argument #for diagonal text, put angle = 45
+TM3 <-  theme_calc() +theme(axis.title.x=element_blank(), axis.text.x = element_text(angle = 60, hjust=1), legend.position = "none") #tilted x-axis labels and title, for no size control, remoe base_size argument #for diagonal text, put angle = 45
 
 TM4 <-  theme_calc() +theme(axis.title.x=element_blank(), axis.text.x=element_blank(), legend.position = "none") # no size control, no x axis labels
 
@@ -243,18 +252,18 @@ cLaB <- scale_colour_manual(values = c("#E95D47"))
 
 
 
-diet_plot <- ggplot(data = Resp_avg, aes(x = PLYBAK, y = Resp_average, colour = PLYBAK))
+diet_plot <- ggplot(data = Resp_avg, aes(x = PLYBAK, y = Resp_average, fill = "black"))
 diet_plot <- diet_plot + G4+  C3 + TM3 + Xlab2 + Ex_labs + Ylab2 #all parameters for general data
 diet_plot <- diet_plot + geom_errorbar(aes(ymin=Resp_average-sd, ymax=Resp_average+sd), width=.2) 
 
-diet_plot <- diet_plot + geom_point(data = trac_sound, mapping=aes(x = PLYBAK, y = if.not.3), color = "light grey", alpha = 0.5, size = 4, position = position_jitter(width = 0.005)) #parameters for the averages  #shape=17,
+diet_plot <- diet_plot + geom_point(data = trac_sound, mapping=aes(x = PLYBAK, y = if.not.3), color = "light grey", alpha = 0.35, size = 4, position = position_jitter(width = 0.1, height = 0.000)) #parameters for the averages  #shape=17,
 class(trac_sound$if.not.3)
 head(as.numeric)
 diet_plot
 
 
-#ggsave("diet_plot.pdf")
-
+#ggsave("diet_plot_BW.pdf")
+# I've just been moving points forward in inkscape, reversing order
 
 
 
@@ -294,34 +303,29 @@ mosaic_d2
 
 
 
+
+Same plot as above except with the model estimates and SD dev rather than the means and standard devs
 ```{r}
+#em_data.1
+#plot model estimates and 95 ci of estimates
 
-Int_palette<- c("#006837", "#31a354", "#78c679", "#ffffcc")
-#scale color brewer, name colors, ylgn 5
+diet_plot <- ggplot(data = em_data.1, aes(x = PLYBAK, y = mean.class, fill = "black"))
+diet_plot <- diet_plot + G4+  C3 + TM3 + Xlab2 + Ex_labs + Ylab2 #all parameters for general data
+diet_plot <- diet_plot + geom_errorbar(aes(ymin=asymp.LCL, ymax=asymp.UCL), width=.2) 
 
-t.d.int.plot<- t.d.int
+diet_plot <- diet_plot + geom_point(data = trac_sound, mapping=aes(x = PLYBAK, y = if.not.3), color = "light grey", alpha = 0.35, size = 4, position = position_jitter(width = 0.1, height = 0.000)) #parameters for the averages  #shape=17,
+class(trac_sound$if.not.3)
+head(as.numeric)
+diet_plot
 
-t.d.int.plot$primary_stim <- factor(t.d.int.plot$primary_stim,levels = c("ts" ,"t1c", "t2c" , "de", "ra" , "rra","rt" ),ordered = TRUE)
 
-t.d.int.plot$Ordinal3<- factor(t.d.int.plot$Ordinal3, levels = c(4, 3, 2, 1, 0))
-t.d.int.plot$Ordinal3<- factor(t.d.int.plot$Ordinal3, ordered= FALSE)
-levels(t.d.int.plot$Ordinal3)
-class(t.d.int.plot$primary_stim)   ##R
- #Ra_T
-  mosaic_int<- ggplot(data = t.d.int.plot) +
-   geom_mosaic(aes(weight = 1, x = product(Ordinal3, primary_stim), fill=Ordinal3), na.rm=TRUE) +  
-        scale_fill_manual(values=Int_palette)+
-   #scale_fill_brewer(type="seq", palette= Int_palette, direction=-1) +
-  # scale_x_continuous(breaks=c("ts",  "t1c", "t2c", "de",  "ra",  "rra", "rt" ),
-     #   labels=c("0c P. pustulosus","1c P. pustulosus","2c pustulosus","D. ebraccatus", "R. alata", "rev R. alata", "rev P. pustulosus"))+
-  
-          theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black")) + #this gets rid of grey background and lines, adds y+x axes lines
-        labs(x="Acoustic stimuli ", y= "Interest score in trial 1") +
-        guides(fill=guide_legend(title = "Interest Score", reverse = TRUE)) 
-  mosaic_int
+#ggsave("diet_plot_BW.pdf")
+# I've just been moving points forward in inkscape, reversing order
 
-  
-ggsave("initial_interest_mosaic.pdf", width = 6.5, height = 5.55)
+
+
+#change colors
+
+#rm(diet_plot)
+
 ```
-
-
