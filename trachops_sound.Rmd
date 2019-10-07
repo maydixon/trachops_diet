@@ -86,6 +86,18 @@ hist(trac_sound$RESPONSE_REVIEWED)
 ```
 
 
+```{r}
+
+clmm_call_type<- clmm(if.not.3 ~ PLYBAK + (1| Bat_ID), data= trac_sound_m, nAGQ = 10)
+summary(clmm_call_type)
+clmm_call_type_null<- clmm(if.not.3 ~ 1 + (1| Bat_ID), data= trac_sound_m, nAGQ = 10)
+summary(clmm_call_type)
+summary(clmm_call_type_null)
+
+#compare the models
+anova(clmm_call_type_null, clmm_call_type)
+
+```
 
 
 
@@ -94,7 +106,8 @@ Model of bat responses to the different sounds
 ```{r}
 #https://stats.stackexchange.com/questions/368150/lsmeans-output-for-clmm-models-r
 #https://cran.r-project.org/web/packages/emmeans/vignettes/sophisticated.html#ordinal
-
+trac_sound_m <- trac_sound
+trac_sound_m$if.not.3 <- as.factor(trac_sound_m$if.not.3 )
 
 #model 
 # if.not.3 = response variable, ordinal scale 0-4 (Would 1-5 make the results more interpretable?)
@@ -102,9 +115,9 @@ Model of bat responses to the different sounds
 # Bat_ID = Grouping/ random variable, 10 levels
 
 
-clmm_call_type<- clmm(as.factor(if.not.3) ~ PLYBAK + (1| Bat_ID), data= trac_sound, nAGQ = 10)
+clmm_call_type<- clmm(if.not.3 ~ PLYBAK + (1| Bat_ID), data= trac_sound_m, nAGQ = 10)
 summary(clmm_call_type)
-print(clmm_call_type)
+
 
 
 
@@ -116,8 +129,11 @@ print(clmm_call_type)
 # "mean.class" obtains the average of these probability distributions as probabilities of the integers 1–5. Does this take into account random effects? 
 
 em_call_type <-emmeans(clmm_call_type, "PLYBAK", mode ="mean.class")
+em_call_type_latent <- emmeans(clmm_call_type, "PLYBAK")
+
 
 em_call_type
+em_call_type_latent 
 cld_call_type<- cld(em_call_type, letters=LETTERS)
 cld_call_type
 plot(cld_call_type)
@@ -131,20 +147,26 @@ s
 #
 #ggsave("tracdiet_emmeans.jpg")
 
+```
 
+```{r}
 #make emmeans output dataframe for ez plotting
-em_data <- as.data.frame(em_call_type)
+em_data <- as.data.frame(cld_call_type)
 
 
 # can plot this on the scale of my ordinal scale (0-4 rather than 1-5, which is default for mean.class, )
 em_data.1<-em_data 
 
+#subtract 1 from all estimates
 em_data.1$mean.class<- em_data$mean.class -1
 em_data.1$asymp.LCL<-em_data$asymp.LCL - 1
 em_data.1$asymp.UCL<-em_data$asymp.UCL- 1
+
+#write to CSV
 em_data 
 em_data.1
-write_csv()
+write.csv(em_data, file = "emm_trac_diet.csv")
+write.csv(em_data.1, file = "emm.1_trac_diet.csv")
 ```
 
 There aren't really good bootstrap or permutation solutions, and they would likely just show us th same thing. According to stats guy. 
@@ -192,6 +214,8 @@ TM1 <- theme(axis.title.x=element_blank(),
         axis.ticks.x=element_blank(), legend.title = element_blank(), plot.background =element_blank() ) #blank axes, blank legend title
 
 TM3 <-  theme_calc() +theme(axis.title.x=element_blank(), axis.text.x = element_text(angle = 60, hjust=1), legend.position = "none") #tilted x-axis labels and title, for no size control, remoe base_size argument #for diagonal text, put angle = 45
+
+TM3.5 <-  theme_calc() +theme(axis.title.x=element_blank(), axis.text.x = element_text(angle = 60, hjust=1), legend.position = "none") #tilted x-axis labels and title, for no size control, remoe base_size argument #for diagonal text, put angle = 45
 
 TM4 <-  theme_calc() +theme(axis.title.x=element_blank(), axis.text.x=element_blank(), legend.position = "none") # no size control, no x axis labels
 
@@ -301,6 +325,11 @@ mosaic_d2
 
 ```
 
+```{r}
+#estra axis parameters on the right side
+TM3.5 <-  theme_calc() +theme(axis.title.x=element_blank(), axis.text.x = element_text(angle = 60, hjust=1), legend.position = "none", axis.line.y.right = element_line(color = "grey"),  axis.ticks.y.right = element_line(color = "grey"), axis.text.y.right = element_blank(), axis.title.y.right = element_text(color = "grey"), axis.text.y.left = element_text(color = "black") ) #tilted x-axis labels and title, for no size control, remoe base_size argument #for diagonal text, put angle = 45
+
+```
 
 
 
@@ -309,17 +338,21 @@ Same plot as above except with the model estimates and SD dev rather than the me
 #em_data.1
 #plot model estimates and 95 ci of estimates
 
-diet_plot <- ggplot(data = em_data.1, aes(x = PLYBAK, y = mean.class, fill = "black"))
-diet_plot <- diet_plot + G4+  C3 + TM3 + Xlab2 + Ex_labs + Ylab2 #all parameters for general data
-diet_plot <- diet_plot + geom_errorbar(aes(ymin=asymp.LCL, ymax=asymp.UCL), width=.2) 
+diet_plot_em <- ggplot(data = em_data.1, aes(x = PLYBAK, y = mean.class, fill = "black"))
+diet_plot_em <- diet_plot_em + G4+  C3 + TM3.5 + Xlab2 + Ex_labs +
+  scale_y_continuous( "Mean probability of bat response score", sec.axis = sec_axis(~ . * 1, name = "Response score")) +
 
-diet_plot <- diet_plot + geom_point(data = trac_sound, mapping=aes(x = PLYBAK, y = if.not.3), color = "light grey", alpha = 0.35, size = 4, position = position_jitter(width = 0.1, height = 0.000)) #parameters for the averages  #shape=17,
-class(trac_sound$if.not.3)
-head(as.numeric)
+#ylab("Mean probability of bat response score") 
+
+ geom_errorbar(aes(ymin=asymp.LCL, ymax=asymp.UCL), width=.2) 
+
+diet_plot_em <- diet_plot_em + geom_point(data = trac_sound, mapping=aes(x = PLYBAK, y = if.not.3), color = "light grey", alpha = 0.35, size = 4, position = position_jitter(width = 0.1, height = 0))  
+
+diet_plot_em 
 diet_plot
 
 
-#ggsave("diet_plot_BW.pdf")
+#ggsave("diet_plot_em_BW.pdf")
 # I've just been moving points forward in inkscape, reversing order
 
 
